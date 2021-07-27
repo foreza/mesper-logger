@@ -20,8 +20,8 @@ const CreativeDebug = Schema({
     adTitle: { type: String },
     timestamp: { type: Date },
     creative: { type: String },
-    errCode: { type: String },
-    errMessage: { type: Number },
+    errCode: { type: Number },
+    errMessage: { type: String },
     versionKey: false 
     }
 );
