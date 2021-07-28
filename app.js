@@ -41,6 +41,12 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+// Shrek? Fiona? Mom? Dad? DONKEY
+app.use( (req, res, next) => {
+  res.setHeader('X-Powered-By', 'Donkey')
+  next()
+})
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development

@@ -15,5 +15,10 @@ router.post('/log/creative', async (req, res, next) => {
   res.status(201).json(result);
 });
 
+// Wipe everything (but why, though)
+router.delete('/donkey', async (req, res, next) => {
+  const result = await creativeDebugUtils.deleteAllCreativeDebugObjects();
+  res.status(204).json(result);
+});
 
 module.exports = router;

@@ -23,4 +23,9 @@ creativeDebugUtilities.deleteCreativeDebugObjectByUID = (uid) => {
     return creativeDebugModel.findByIdAndDelete(uid);
 }
 
+// Delete everything.
+creativeDebugUtilities.deleteAllCreativeDebugObjects = (uid) => {
+    return creativeDebugModel.deleteMany({});
+}
+
 module.exports = creativeDebugUtilities;                     
