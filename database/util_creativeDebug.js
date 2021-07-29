@@ -28,4 +28,16 @@ creativeDebugUtilities.deleteAllCreativeDebugObjects = (uid) => {
     return creativeDebugModel.deleteMany({});
 }
 
+
+/* Analysis specific queries */ 
+
+// Aggregate on different advertisers
+creativeDebugUtilities.aggregateOnAdSystem = () => {
+    return creativeDebugModel.aggregate(    [ 
+        { "$group":  { "_id": "$adSystem", "count": { "$sum": 1 } } }
+    ],  )
+}
+
+
+
 module.exports = creativeDebugUtilities;                     

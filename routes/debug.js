@@ -21,4 +21,11 @@ router.delete('/donkey', async (req, res, next) => {
   res.status(204).json(result);
 });
 
+
+/* reporting routes */
+router.get('/report', async (req, res, next) => {
+  const result = await creativeDebugUtils.aggregateOnAdSystem();
+  res.json(result);
+})
+
 module.exports = router;
