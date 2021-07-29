@@ -18,6 +18,7 @@ mongoose.connection.on('disconnected', () => { console.log(`Mongoose env: ${proc
 
 var indexRouter = require('./routes/index');
 var debugRouter = require('./routes/debug');
+var reportingRouter = require('./routes/reporting');
 
 var app = express();
 
@@ -35,6 +36,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/debug', debugRouter);
+app.use('/reporting', reportingRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -42,7 +45,7 @@ app.use(function(req, res, next) {
 });
 
 // Shrek? Fiona? Mom? Dad? DONKEY
-app.use( (req, res, next) => {
+app.use((req, res, next) => {
   res.setHeader('X-Powered-By', 'Donkey')
   next()
 })

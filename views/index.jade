@@ -2,4 +2,9 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Hello, my friend
+  a(href="/reporting") Go to /reporting to see reports
+  p 
+  a(href="/debug") Go to /debug to see list of creatives 
+  p
+  a(href="/debug/creative/12456789") Go to /debug/creative/ to view specific creative

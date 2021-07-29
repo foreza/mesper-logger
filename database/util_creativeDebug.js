@@ -78,6 +78,4 @@ creativeDebugUtilities.aggregateOnParam = (param) => {
 
 
 
-
-
 module.exports = creativeDebugUtilities;                     
