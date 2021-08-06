@@ -10,8 +10,11 @@ router.get('/', async (req, res, next) => {
     // Advanced queries
     const errCodeAggregate = await creativeDebugUtils.aggregateErrorsOnAdvertiser();
     const adTitleAggregateByAdvertiser = await creativeDebugUtils.aggregateAdTitleByAdvertiser();
+    const errCodeAdvAggregate = await creativeDebugUtils.aggregateAdErrorsBySystemAndTitle();
+
     res.json({
         adSystemBreakdown: adSystemAggregate,
+        adErrorDetailedBreakdown: errCodeAdvAggregate,
         errCodeBreakdown: errCodeAggregate,
         adTitleByAdvertiser: adTitleAggregateByAdvertiser
     });

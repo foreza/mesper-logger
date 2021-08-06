@@ -58,6 +58,20 @@ creativeDebugUtilities.aggregateAdTitleByAdvertiser = () => {
 }
 
 
+creativeDebugUtilities.aggregateAdErrorsBySystemAndTitle = () => {
+    return creativeDebugModel.aggregate([ 
+        { 
+            "$group":  { 
+                "_id": "$errMessage", 
+                "adSystem": {$addToSet: "$adSystem"},
+                "adTitle": {$addToSet: "$adTitle"},
+                "count": { "$sum": 1 } 
+            } 
+        }
+    ],  )
+}
+
+
 
 // Basic aggregation
 /*
