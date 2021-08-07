@@ -65,6 +65,7 @@ creativeDebugUtilities.aggregateAdErrorsBySystemAndTitle = () => {
                 "_id": "$errMessage", 
                 "adSystem": {$addToSet: "$adSystem"},
                 "adTitle": {$addToSet: "$adTitle"},
+                "creative_id": {$addToSet: "$_id"},
                 "count": { "$sum": 1 } 
             } 
         }
