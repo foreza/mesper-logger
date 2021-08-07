@@ -41,9 +41,9 @@ creativeDebugUtilities.aggregateErrorsOnAdvertiser = () => {
                     AD_SYSTEM: "$adSystem",
                 },
                 "count": { "$sum": 1 }
-
             }
-        }
+        },
+        { $sort: {"count": -1} }
     ])
 }
 
@@ -80,15 +80,16 @@ creativeDebugUtilities.aggregateAdTitleByAdvertiser = () => {
 creativeDebugUtilities.aggregateAdErrorsBySystemAndTitle = () => {
     return creativeDebugModel.aggregate([
         {
-            "$group": {
+            $group:
+            {
                 "_id": {
-                    ERR_MSG: "$errMessage",
-                    AD_SYSTEM: "$adSystem"
+                    ERR_MSG: "$errMessage", AD_SYSTEM: "$adSystem"
                 },
                 "creative_id": { $addToSet: "$_id" },
                 "count": { "$sum": 1 }
-            }
-        }
+            },
+        },
+        { $sort: { "count": -1 } }
     ])
 }
 
@@ -100,17 +101,17 @@ creativeDebugUtilities.aggregateAdErrorsBySystemAndTitleWithBaseURL = (baseurl) 
             "$addFields": {
                 "creative_id": { "$toString": "$_id" }
             }
-            
+
         },
         {
             "$group": {
                 "_id": "$errMessage",
                 "adSystem": { $addToSet: "$adSystem" },
                 "adTitle": { $addToSet: "$adTitle" },
-                "creative_id_url": { $addToSet: {$concat: [baseurl, "$creative_id"]}},
+                "creative_id_url": { $addToSet: { $concat: [baseurl, "$creative_id"] } },
                 "count": { "$sum": 1 }
             }
-        } 
+        }
     ])
 }
 
@@ -126,12 +127,12 @@ creativeDebugUtilities.aggregateOnParam = (param) => {
     }
     return creativeDebugModel.aggregate([
         {
-            "$group":
-            {
+            $group: {
                 "_id": "$" + param,
                 "count": { "$sum": 1 }
             }
-        }
+        },
+        { $sort: { "count": -1 } }
     ])
 }
 
