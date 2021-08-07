@@ -1,4 +1,4 @@
-const creativeDebugModel =  require('../models/creativeDebug');       
+const creativeDebugModel = require('../models/creativeDebug');
 const creativeDebugUtilities = {};
 
 const maxCreativeReturnLimit = 500;         // TODO: Hopefully we shouldn't pass this...
@@ -29,47 +29,52 @@ creativeDebugUtilities.deleteAllCreativeDebugObjects = (uid) => {
 }
 
 
-/* Analysis specific queries */ 
+/* Analysis specific queries */
 
 // Aggregate on error code by advertiser
 creativeDebugUtilities.aggregateErrorsOnAdvertiser = () => {
-    return creativeDebugModel.aggregate(    [ 
-        { 
-            "$group":  { 
-                "_id": "$errCode", 
-                "adSystem": {$addToSet: "$adSystem"},
-                "count": { "$sum": 1 } 
-                
-            } 
+    return creativeDebugModel.aggregate([
+        {
+            "$group": {
+                "_id": "$errCode",
+                "adSystem": { $addToSet: "$adSystem" },
+                "count": { "$sum": 1 }
+
+            }
         }
-    ],  )
+    ])
 }
 
 creativeDebugUtilities.aggregateAdTitleByAdvertiser = () => {
-    return creativeDebugModel.aggregate(    [ 
-        { 
-            "$group":  { 
-                "_id": "$adTitle", 
-                "adSystem": {$addToSet: "$adSystem"},
-                "count": { "$sum": 1 } 
-            } 
+    return creativeDebugModel.aggregate([
+        {
+            "$group": {
+                "_id": "$adTitle",
+                "adSystem": { $addToSet: "$adSystem" },
+                "count": { "$sum": 1 }
+            }
         }
-    ],  )
+    ])
 }
 
 
-creativeDebugUtilities.aggregateAdErrorsBySystemAndTitle = () => {
-    return creativeDebugModel.aggregate([ 
-        { 
-            "$group":  { 
-                "_id": "$errMessage", 
-                "adSystem": {$addToSet: "$adSystem"},
-                "adTitle": {$addToSet: "$adTitle"},
-                "creative_id": {$addToSet: "$_id"},
-                "count": { "$sum": 1 } 
-            } 
+creativeDebugUtilities.aggregateAdErrorsBySystemAndTitleWithBaseURL = (baseurl) => {
+    return creativeDebugModel.aggregate([
+        {
+            "$addFields": {
+                "creative_id": { "$toString": "$_id" }
+            }
+        },
+        {
+            "$group": {
+                "_id": "$errMessage",
+                "adSystem": { $addToSet: "$adSystem" },
+                "adTitle": { $addToSet: "$adTitle" },
+                "creative_id_url": { $addToSet: {$concat: [baseurl, "$creative_id"]}},
+                "count": { "$sum": 1 }
+            }
         }
-    ],  )
+    ])
 }
 
 
@@ -82,13 +87,15 @@ creativeDebugUtilities.aggregateOnParam = (param) => {
     if (param == undefined) {
         return;
     }
-    return creativeDebugModel.aggregate(    [ 
-        { "$group":  
-            { "_id": "$" + param, 
-              "count": { "$sum": 1 }
-            } 
+    return creativeDebugModel.aggregate([
+        {
+            "$group":
+            {
+                "_id": "$" + param,
+                "count": { "$sum": 1 }
+            }
         }
-    ],  )
+    ])
 }
 
 

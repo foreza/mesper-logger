@@ -10,7 +10,10 @@ router.get('/', async (req, res, next) => {
     // Advanced queries
     const errCodeAggregate = await creativeDebugUtils.aggregateErrorsOnAdvertiser();
     const adTitleAggregateByAdvertiser = await creativeDebugUtils.aggregateAdTitleByAdvertiser();
-    const errCodeAdvAggregate = await creativeDebugUtils.aggregateAdErrorsBySystemAndTitle();
+
+    // Main error source query
+    var creativeDebugUrl = req.protocol + '://' + req.get('host') + "/debug/creative/";
+    const errCodeAdvAggregate = await creativeDebugUtils.aggregateAdErrorsBySystemAndTitleWithBaseURL(creativeDebugUrl);
 
     res.json({
         adSystemBreakdown: adSystemAggregate,
