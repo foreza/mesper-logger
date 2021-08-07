@@ -36,8 +36,10 @@ creativeDebugUtilities.aggregateErrorsOnAdvertiser = () => {
     return creativeDebugModel.aggregate([
         {
             "$group": {
-                "_id": "$errCode",
-                "adSystem": { $addToSet: "$adSystem" },
+                "_id": {
+                    ERR_CODE: "$errCode",
+                    AD_SYSTEM: "$adSystem",
+                },
                 "count": { "$sum": 1 }
 
             }
@@ -49,28 +51,47 @@ creativeDebugUtilities.aggregateAdTitleByAdvertiser = () => {
     return creativeDebugModel.aggregate([
         {
             "$group": {
-                "_id": "$adTitle",
-                "adSystem": { $addToSet: "$adSystem" },
+                "_id": {
+                    AD_TITLE: "$adTitle",
+                    AD_SYSTEM: "$adSystem",
+                },
                 "count": { "$sum": 1 }
             }
         }
     ])
 }
+
+
+// creativeDebugUtilities.aggregateAdErrorsBySystemAndTitle = () => {
+//     return creativeDebugModel.aggregate([
+//         {
+//             "$group": {
+//                 "_id": "$errMessage",
+//                 "adSystem": { $addToSet: "$adSystem" },
+//                 "adTitle": { $addToSet: "$adTitle" },
+//                 "creative_id_url": { $addToSet: "$_id" },
+//                 "count": { "$sum": 1 }
+//             }
+//         }
+//     ])
+// }
 
 
 creativeDebugUtilities.aggregateAdErrorsBySystemAndTitle = () => {
     return creativeDebugModel.aggregate([
         {
             "$group": {
-                "_id": "$errMessage",
-                "adSystem": { $addToSet: "$adSystem" },
-                "adTitle": { $addToSet: "$adTitle" },
-                "creative_id_url": { $addToSet: "$_id" },
+                "_id": {
+                    ERR_MSG: "$errMessage",
+                    AD_SYSTEM: "$adSystem"
+                },
+                "creative_id": { $addToSet: "$_id" },
                 "count": { "$sum": 1 }
             }
         }
     ])
 }
+
 
 // Unsupported on older versions of mongoDB - do not run if mongo v is under 4
 creativeDebugUtilities.aggregateAdErrorsBySystemAndTitleWithBaseURL = (baseurl) => {
