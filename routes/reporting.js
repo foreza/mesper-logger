@@ -11,9 +11,10 @@ router.get('/', async (req, res, next) => {
     const errCodeAggregate = await creativeDebugUtils.aggregateErrorsOnAdvertiser();
     const adTitleAggregateByAdvertiser = await creativeDebugUtils.aggregateAdTitleByAdvertiser();
 
-    // Main error source query
-    var creativeDebugUrl = req.protocol + '://' + req.get('host') + "/debug/creative/";
-    const errCodeAdvAggregate = await creativeDebugUtils.aggregateAdErrorsBySystemAndTitleWithBaseURL(creativeDebugUrl);
+    // Main error source query - enable this once mongo is running a later version
+    // var creativeDebugUrl = req.protocol + '://' + req.get('host') + "/debug/creative/";
+    // const errCodeAdvAggregate = await creativeDebugUtils.aggregateAdErrorsBySystemAndTitleWithBaseURL(creativeDebugUrl);
+    errCodeAdvAggregate = await creativeDebugUtils.aggregateAdErrorsBySystemAndTitle();
 
     res.json({
         adSystemBreakdown: adSystemAggregate,

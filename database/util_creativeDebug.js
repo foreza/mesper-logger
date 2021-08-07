@@ -58,12 +58,28 @@ creativeDebugUtilities.aggregateAdTitleByAdvertiser = () => {
 }
 
 
+creativeDebugUtilities.aggregateAdErrorsBySystemAndTitle = () => {
+    return creativeDebugModel.aggregate([
+        {
+            "$group": {
+                "_id": "$errMessage",
+                "adSystem": { $addToSet: "$adSystem" },
+                "adTitle": { $addToSet: "$adTitle" },
+                "creative_id_url": { $addToSet: "$_id" },
+                "count": { "$sum": 1 }
+            }
+        }
+    ])
+}
+
+// Unsupported on older versions of mongoDB - do not run if mongo v is under 4
 creativeDebugUtilities.aggregateAdErrorsBySystemAndTitleWithBaseURL = (baseurl) => {
     return creativeDebugModel.aggregate([
         {
             "$addFields": {
                 "creative_id": { "$toString": "$_id" }
             }
+            
         },
         {
             "$group": {
@@ -73,7 +89,7 @@ creativeDebugUtilities.aggregateAdErrorsBySystemAndTitleWithBaseURL = (baseurl) 
                 "creative_id_url": { $addToSet: {$concat: [baseurl, "$creative_id"]}},
                 "count": { "$sum": 1 }
             }
-        }
+        } 
     ])
 }
 
